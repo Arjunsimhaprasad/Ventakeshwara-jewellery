@@ -59,7 +59,7 @@ router.post('/register', authRateLimiter, async (req: Request, res: Response, ne
     const token = jwt.sign(
       { id: newProfile.id, email: newProfile.email, fullName: newProfile.fullName, role: newProfile.role },
       JWT_SECRET,
-      { expiresIn: JWT_EXPIRES_IN }
+      { expiresIn: JWT_EXPIRES_IN as any }
     );
 
     return res.status(201).json({
@@ -96,7 +96,7 @@ router.post('/login', authRateLimiter, async (req: Request, res: Response, next)
     const token = jwt.sign(
       { id: profile.id, email: profile.email, fullName: profile.fullName, role: profile.role },
       JWT_SECRET,
-      { expiresIn: JWT_EXPIRES_IN }
+      { expiresIn: JWT_EXPIRES_IN as any }
     );
 
     return res.json({

@@ -15,10 +15,17 @@ import analyticsRoutes from './routes/analytics';
 import aiRoutes from './routes/ai';
 import { errorHandler } from './middleware/error';
 
+import { connectMongoDB } from './services/mongodb';
+
 dotenv.config();
 
 export const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Connect to MongoDB if MONGODB_URI is specified
+if (process.env.MONGODB_URI) {
+  connectMongoDB();
+}
 
 // Security & Middleware
 app.use(helmet());

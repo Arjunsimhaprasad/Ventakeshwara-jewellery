@@ -54,7 +54,8 @@ router.post('/', authenticate, (req: Request, res: Response, next) => {
     // Coupon discount verification server-side
     let discountAmount = 0;
     if (data.couponCode) {
-      const offer = db.offers.find(o => o.code === data.couponCode.toUpperCase() && o.isActive);
+      const couponUpper = data.couponCode.toUpperCase();
+      const offer = db.offers.find(o => o.code === couponUpper && o.isActive);
       if (offer) {
         discountAmount = (subtotal * offer.discountPercentage) / 100;
       }

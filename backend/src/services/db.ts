@@ -306,3 +306,11 @@ class InMemoryDatabase {
 }
 
 export const db = new InMemoryDatabase();
+
+const SUPABASE_URL = process.env.SUPABASE_URL || '';
+const SUPABASE_SECRET_KEY = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+export const supabase = (SUPABASE_URL && !SUPABASE_URL.includes('your-project'))
+  ? createClient(SUPABASE_URL, SUPABASE_SECRET_KEY)
+  : null;
+

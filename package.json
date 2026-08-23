@@ -1,0 +1,13 @@
+{
+  "name": "venkateshwara-jewellery-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Venkateshwara Jewellery Commerce Platform Root Repository",
+  "scripts": {
+    "build:backend": "cd backend && npm install && npm run build",
+    "build:frontend": "cd frontend && npm install && npm run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "start": "cd backend && npm start",
+    "test": "cd backend && npm test"
+  }
+}

@@ -133,10 +133,15 @@ router.patch('/:id', authenticate, requireRole('staff', 'admin', 'owner'), (req:
     }
 
     const current = db.products[index];
+    const updatedImages = data.images
+      ? data.images.map((img, idx) => ({ id: `img-${Date.now()}-${idx}`, imageUrl: img.imageUrl, altText: img.altText, sortOrder: img.sortOrder }))
+      : current.images;
+
     const updated: ProductRecord = {
       ...current,
       ...data,
       categoryId: data.categoryId !== undefined ? data.categoryId : current.categoryId,
+      images: updatedImages,
       updatedAt: new Date().toISOString()
     };
 
