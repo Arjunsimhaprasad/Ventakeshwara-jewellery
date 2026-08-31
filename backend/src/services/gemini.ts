@@ -88,6 +88,7 @@ export async function generateProductRecommendations(userPreferences: any): Prom
   recommendations: { productId: string; reason: string; matchScore: number; highlights: string[] }[];
   summary: string;
 }> {
+  const ai = getAiClient();
   const activeProducts = db.products.filter(p => p.status === 'active');
   const context = activeProducts.map(p => ({
     id: p.id,
@@ -160,6 +161,7 @@ export async function generateProductComparison(productIds: string[]): Promise<{
   comparison: { productId: string; strengths: string[]; considerations: string[] }[];
   recommendation: string;
 }> {
+  const ai = getAiClient();
   const selectedProducts = db.products.filter(p => productIds.includes(p.id));
 
   if (!ai) {
@@ -207,6 +209,7 @@ export async function generateBusinessInsights(): Promise<{
   insights: { title: string; description: string; importance: 'low' | 'medium' | 'high'; evidence: string[]; recommendedAction: string }[];
   summary: string;
 }> {
+  const ai = getAiClient();
   const totalRevenue = db.orders.reduce((acc, o) => acc + o.totalAmount, 0);
   const totalOrders = db.orders.length;
   const lowStockCount = db.products.filter(p => p.stockQuantity <= 3).length;
@@ -275,6 +278,7 @@ export async function generateSupportAssistantReply(ticket: any): Promise<{
   summary: string;
   suggestedResponse: string;
 }> {
+  const ai = getAiClient();
   if (!ai) {
     return {
       category: ticket.category || 'General',
