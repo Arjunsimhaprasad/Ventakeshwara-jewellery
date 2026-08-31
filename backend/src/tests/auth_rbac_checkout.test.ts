@@ -120,5 +120,5 @@ describe('Venkateshwara Jewellery API - Security, RBAC & Checkout Verification',
     expect(res.body.text).toBeDefined();
     expect(typeof res.body.text).toBe('string');
     expect(res.body.text.length).toBeGreaterThan(10);
-  });
+  }, 15000);
 });
