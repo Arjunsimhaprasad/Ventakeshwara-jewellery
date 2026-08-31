@@ -68,9 +68,11 @@ app.use('/api/rates', ratesRoutes);
 // Structured Error Handler
 app.use(errorHandler);
 
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   const portNum = Number(PORT) || 5000;
   app.listen(portNum, '0.0.0.0', () => {
     console.log(`✨ Venkateshwara Jewellery Backend listening on 0.0.0.0:${portNum}`);
   });
 }
+
+export default app;
