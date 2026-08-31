@@ -1,7 +1,9 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import dotenv from 'dotenv';
 import authRoutes from './routes/auth';
 import productRoutes from './routes/products';
 import categoryRoutes from './routes/categories';
@@ -13,11 +15,10 @@ import supportRoutes from './routes/support';
 import offerRoutes from './routes/offers';
 import analyticsRoutes from './routes/analytics';
 import aiRoutes from './routes/ai';
+import ratesRoutes from './routes/rates';
 import { errorHandler } from './middleware/error';
 
 import { connectMongoDB } from './services/mongodb';
-
-dotenv.config();
 
 export const app = express();
 const PORT = process.env.PORT || 5000;
@@ -62,6 +63,7 @@ app.use('/api/support/tickets', supportRoutes);
 app.use('/api/offers', offerRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/rates', ratesRoutes);
 
 // Structured Error Handler
 app.use(errorHandler);

@@ -129,6 +129,17 @@ export interface AuditLogRecord {
   createdAt: string;
 }
 
+export interface MetalRateRecord {
+  id: string;
+  gold24kPerGram: number;
+  gold22kPerGram: number;
+  gold18kPerGram: number;
+  silverPerGram: number;
+  notes?: string;
+  updatedBy?: string | null;
+  createdAt: string;
+}
+
 class InMemoryDatabase {
   categories: CategoryRecord[] = [
     {
@@ -303,6 +314,18 @@ class InMemoryDatabase {
   ];
   supportTickets: SupportTicketRecord[] = [];
   auditLogs: AuditLogRecord[] = [];
+  metalRates: MetalRateRecord[] = [
+    {
+      id: 'mr000000-0000-0000-0000-000000000001',
+      gold24kPerGram: 7350.00,
+      gold22kPerGram: 6738.00,
+      gold18kPerGram: 5512.00,
+      silverPerGram: 88.00,
+      notes: 'Initial market benchmark for Venkateshwara Jewellery',
+      updatedBy: null,
+      createdAt: new Date().toISOString()
+    }
+  ];
 }
 
 export const db = new InMemoryDatabase();

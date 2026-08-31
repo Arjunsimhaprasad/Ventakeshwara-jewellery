@@ -141,3 +141,13 @@ export const AISupportAssistantSchema = z.object({
 export const AIBusinessInsightsSchema = z.object({
   timeframeDays: z.number().default(30)
 });
+
+// Metal Rate Schema
+export const UpdateMetalRatesSchema = z.object({
+  gold24kPerGram: z.number().positive('24K gold rate must be positive'),
+  gold22kPerGram: z.number().positive('22K gold rate must be positive'),
+  gold18kPerGram: z.number().positive('18K gold rate must be positive'),
+  silverPerGram: z.number().positive('Silver rate must be positive'),
+  notes: z.string().optional()
+});
+

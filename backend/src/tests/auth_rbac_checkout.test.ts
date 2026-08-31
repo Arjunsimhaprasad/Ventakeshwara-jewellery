@@ -92,4 +92,33 @@ describe('Venkateshwara Jewellery API - Security, RBAC & Checkout Verification',
     expect(checkoutRes.body.subtotal).toBe(327750); // Computed strictly from DB price and discount
     expect(checkoutRes.body.totalAmount).toBe(327750);
   });
+
+  it('4. Pre-seeded Demo Customer login succeeds and issues valid token', async () => {
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({
+        email: 'customer@example.com',
+        password: 'password123'
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.token).toBeDefined();
+    expect(res.body.user.email).toBe('customer@example.com');
+    expect(res.body.user.role).toBe('customer');
+  });
+
+  it('5. AI Chat Endpoint POST /api/ai/chat returns intelligent concierge response', async () => {
+    const res = await request(app)
+      .post('/api/ai/chat')
+      .send({
+        messages: [
+          { role: 'user', content: 'What is the price and purity of your Royal Temple Lakshmi Necklace?' }
+        ]
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.text).toBeDefined();
+    expect(typeof res.body.text).toBe('string');
+    expect(res.body.text.length).toBeGreaterThan(10);
+  });
 });

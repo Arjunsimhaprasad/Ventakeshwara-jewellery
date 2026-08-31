@@ -1,14 +1,21 @@
 import { GoogleGenAI } from '@google/genai';
-import { db, ProductRecord } from './db';
+import { db } from './db';
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
-
-// Initialize official @google/genai SDK on backend ONLY
-const ai = GEMINI_API_KEY ? new GoogleGenAI({ apiKey: GEMINI_API_KEY }) : null;
+function getAiClient(): GoogleGenAI | null {
+  const apiKey = process.env.GEMINI_API_KEY || '';
+  if (!apiKey || apiKey === 'your_gemini_api_key_here') return null;
+  try {
+    return new GoogleGenAI({ apiKey });
+  } catch (e) {
+    console.error('[Gemini Init Error]:', e);
+    return null;
+  }
+}
 
 export async function generateAIChatResponse(
   messages: { role: 'user' | 'assistant'; content: string }[]
 ): Promise<{ text: string }> {
+  const ai = getAiClient();
   const productsContext = db.products.map(p => ({
     id: p.id,
     name: p.name,
@@ -30,32 +37,51 @@ ${JSON.stringify(productsContext, null, 2)}
 3. If asked about gold investment guarantees or speculative gold price forecasts, politely state that Venkateshwara Jewellery offers certified 22K hallmarked gold and VVS diamonds, but does not provide speculative investment advice.
 4. Keep answers clear, succinct, and helpful. If data is unavailable, direct the customer to contact human support.`;
 
-  if (!ai) {
-    // Elegant fallback response when GEMINI_API_KEY is not set or running offline
-    const lastUserMessage = messages[messages.length - 1]?.content.toLowerCase() || '';
-    if (lastUserMessage.includes('gold') || lastUserMessage.includes('necklace')) {
-      return { text: "Welcome to Venkateshwara Jewellery. Our Royal Temple Lakshmi Necklace in 22K (916) hallmarked gold is one of our flagship pieces, priced at ₹3,45,000. Would you like me to reserve a viewing or share more details on making charges?" };
+  const lastUserMessage = messages[messages.length - 1]?.content.toLowerCase() || '';
+
+  if (ai) {
+    try {
+      const formattedPrompt = `${systemInstruction}\n\nUser Conversation History:\n` +
+        messages.map(m => `${m.role.toUpperCase()}: ${m.content}`).join('\n');
+
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: formattedPrompt,
+      });
+
+      if (response.text) {
+        return { text: response.text };
+      }
+    } catch (error) {
+      console.error("[Gemini AI Service Error]:", error);
     }
-    if (lastUserMessage.includes('ring') || lastUserMessage.includes('diamond')) {
-      return { text: "Our Eternal Radiance Solitaire Ring features a certified 1.5 Carat VVS1 F-Color diamond set in 18K white gold. It is currently available for ₹2,85,000. May I assist you with ring sizing advice?" };
-    }
-    return { text: "Namaste! I am Ratna, your luxury jewellery advisor at Venkateshwara Jewellery. How may I assist you with our Gold, Diamond, Polki, or Gemstone collections today?" };
   }
 
-  try {
-    const formattedPrompt = `${systemInstruction}\n\nUser Conversation History:\n` +
-      messages.map(m => `${m.role.toUpperCase()}: ${m.content}`).join('\n');
-
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: formattedPrompt,
-    });
-
-    return { text: response.text || "Thank you for reaching out to Venkateshwara Jewellery. How else may I assist you?" };
-  } catch (error) {
-    console.error("[Gemini AI Service Error]:", error);
-    return { text: "I apologize for the brief pause. Our luxury jewellery consultants are also standing by via live support to assist you." };
+  // Smart catalog-backed fallback when AI service is offline or rate limited
+  if (lastUserMessage.includes('temple') || lastUserMessage.includes('necklace') || lastUserMessage.includes('22k')) {
+    return {
+      text: "Our flagship **Royal Temple Lakshmi Necklace** is handcrafted in 22K (916) BIS hallmarked gold with natural rubies and emerald accents. It weighs 48.5g, priced at ₹3,45,000 (with making charges of ₹12,500). We currently have 3 pieces in stock."
+    };
   }
+  if (lastUserMessage.includes('diamond') || lastUserMessage.includes('ring') || lastUserMessage.includes('solitaire') || lastUserMessage.includes('18k')) {
+    return {
+      text: "Our **Eternal Radiance Solitaire Ring** features a 1.5 Carat VVS1 F-Color certified natural diamond set in 18K white gold. It is priced at ₹2,85,000 with zero discount. 5 pieces are currently available in our boutique."
+    };
+  }
+  if (lastUserMessage.includes('choker') || lastUserMessage.includes('polki') || lastUserMessage.includes('kundan') || lastUserMessage.includes('emerald')) {
+    return {
+      text: "The **Heritage Emerald Kundan Choker** is a traditional Mughal-inspired piece in 22K gold featuring uncut Polki diamonds and Zambian emeralds. Priced at ₹5,20,000 with an 8% limited festal discount."
+    };
+  }
+  if (lastUserMessage.includes('difference') || lastUserMessage.includes('purity') || lastUserMessage.includes('18k vs 22k')) {
+    return {
+      text: "22K Gold (916) contains 91.6% pure gold, ideal for traditional bridal jewellery. 18K Gold (750) contains 75% pure gold alloyed for structural strength, making it the perfect standard for setting diamonds and gemstones."
+    };
+  }
+
+  return {
+    text: "Namaste! I am Ratna, your luxury concierge at Venkateshwara Jewellery. All our gold is 100% BIS 916 Hallmarked and our diamonds are IGI/GIA VVS Certified. How may I assist you with our Gold, Solitaire, Polki, or Gemstone collections today?"
+  };
 }
 
 export async function generateProductRecommendations(userPreferences: any): Promise<{

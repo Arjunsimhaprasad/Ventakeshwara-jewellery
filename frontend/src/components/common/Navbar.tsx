@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, Heart, Sparkles, User, Search, ShieldCheck, LogOut, Menu, X } from 'lucide-react';
+import { ShoppingBag, Heart, Sparkles, User, Search, ShieldCheck, LogOut, Menu, X, Coins } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useCart } from '../../hooks/useCart';
 import { useWishlist } from '../../hooks/useWishlist';
@@ -17,6 +17,26 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [todayRates, setTodayRates] = useState<{ gold22kPerGram: number; gold24kPerGram: number; silverPerGram: number }>({
+    gold22kPerGram: 6738,
+    gold24kPerGram: 7350,
+    silverPerGram: 88
+  });
+
+  useEffect(() => {
+    fetch('/api/rates/today')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data && data.gold22kPerGram) {
+          setTodayRates({
+            gold22kPerGram: data.gold22kPerGram,
+            gold24kPerGram: data.gold24kPerGram,
+            silverPerGram: data.silverPerGram
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,12 +50,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
       {/* Live Gold Ticker Banner */}
       <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-burgundy-900 border-b border-gold-500/10 py-1.5 px-4 text-[11px] text-slate-300 font-medium">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 truncate">
             <span className="flex items-center gap-1 text-gold-400 font-semibold">
               <ShieldCheck className="w-3.5 h-3.5 text-gold-500" /> BIS 100% Hallmarked 22K/18K Gold
             </span>
             <span className="hidden md:inline text-slate-400">|</span>
-            <span className="hidden md:inline text-slate-300">Today's Gold Rate: <strong className="text-gold-300">₹7,240/g (22K)</strong></span>
+            <span className="hidden md:flex items-center gap-2 text-slate-300">
+              <Coins className="w-3 h-3 text-gold-400" />
+              Today's Live Rates:
+              <strong className="text-gold-300 font-bold">22K: ₹{todayRates.gold22kPerGram.toLocaleString('en-IN')}/g</strong>
+              <span className="text-slate-500">•</span>
+              <strong className="text-amber-300">24K: ₹{todayRates.gold24kPerGram.toLocaleString('en-IN')}/g</strong>
+              <span className="text-slate-500">•</span>
+              <strong className="text-slate-300">Silver: ₹{todayRates.silverPerGram.toLocaleString('en-IN')}/g</strong>
+            </span>
           </div>
           <div className="flex items-center gap-4">
             <button

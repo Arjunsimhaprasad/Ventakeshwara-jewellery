@@ -10,7 +10,7 @@ const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-jwt-key-replace-in-production';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 
-// Seed default Owner user if none exists
+// Seed default Owner & Customer users if none exist
 if (!db.profiles.some(p => p.role === 'admin' || p.role === 'owner')) {
   const adminPasswordHash = bcrypt.hashSync('akhilavirat', 10);
   db.profiles.push({
@@ -23,6 +23,27 @@ if (!db.profiles.some(p => p.role === 'admin' || p.role === 'owner')) {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   });
+}
+
+if (!db.profiles.some(p => p.email === 'customer@example.com')) {
+  const customerPasswordHash = bcrypt.hashSync('password123', 10);
+  const customerId = 'u0000000-0000-0000-0000-000000000001';
+  db.profiles.push({
+    id: customerId,
+    fullName: 'Ananya Sharma',
+    email: 'customer@example.com',
+    passwordHash: customerPasswordHash,
+    phone: '+91 98765 12345',
+    role: 'customer',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  });
+  if (!db.carts.some(c => c.userId === customerId)) {
+    db.carts.push({ id: 'cart-demo-customer', userId: customerId });
+  }
+  if (!db.wishlists.some(w => w.userId === customerId)) {
+    db.wishlists.push({ id: 'wl-demo-customer', userId: customerId });
+  }
 }
 
 // POST /api/auth/register
@@ -124,7 +145,7 @@ router.post('/logout', (req: Request, res: Response) => {
 router.get('/me', authenticate, (req: Request, res: Response) => {
   const profile = db.profiles.find(p => p.id === req.user?.id);
   if (!profile) {
-    return res.status(444).json({ error: 'Not Found', message: 'User profile not found' });
+    return res.status(404).json({ error: 'Not Found', message: 'User profile not found' });
   }
 
   return res.json({

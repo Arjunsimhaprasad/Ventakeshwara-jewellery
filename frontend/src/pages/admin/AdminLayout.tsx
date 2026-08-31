@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingBag, Tag, Users, LifeBuoy, Sparkles, Store, LogOut, ShieldAlert } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Tag, Users, LifeBuoy, Sparkles, Store, LogOut, ShieldAlert, Coins } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
 export const AdminLayout: React.FC = () => {
@@ -32,6 +32,7 @@ export const AdminLayout: React.FC = () => {
 
   const navItems = [
     { label: 'Executive Dashboard', path: '/admin', icon: LayoutDashboard },
+    { label: 'Daily Gold Rates', path: '/admin/gold-rates', icon: Coins },
     { label: 'Product Inventory', path: '/admin/products', icon: Package },
     { label: 'Order Processing', path: '/admin/orders', icon: ShoppingBag },
     { label: 'Promotions & Offers', path: '/admin/offers', icon: Tag },

@@ -24,7 +24,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return saved ? JSON.parse(saved) : null;
   });
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('vj_token'));
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const verifySession = async () => {
+      if (!token) {
+        setIsLoading(false);
+        return;
+      }
+      try {
+        const res = await fetch('/api/auth/me', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const profile = await res.json();
+          setUser(profile);
+          localStorage.setItem('vj_user', JSON.stringify(profile));
+        } else {
+          // Token invalid or expired
+          logout();
+        }
+      } catch (err) {
+        console.warn('Session check warning:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    verifySession();
+  }, [token]);
 
   const login = (newToken: string, newUser: UserProfile) => {
     setToken(newToken);
