@@ -23,8 +23,9 @@ services:
         sync: false
 
   # 2. React + Vite Luxury Frontend Static Site
-  - type: static
+  - type: web
     name: venkateshwara-jewellery-frontend
+    env: static
     region: singapore
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: ./frontend/dist
