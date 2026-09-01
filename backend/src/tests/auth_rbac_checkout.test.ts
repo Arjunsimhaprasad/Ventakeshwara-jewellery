@@ -72,7 +72,7 @@ describe('Venkateshwara Jewellery API - Security, RBAC & Checkout Verification',
       .post('/api/cart/items')
       .set('Authorization', `Bearer ${customerToken}`)
       .send({
-        productId: 'p0000000-0000-0000-0000-000000000001', // Price in DB = 345000, 5% discount -> 327750
+        productId: 'f0000000-0000-0000-0000-000000000001', // Price in DB = 345000, 5% discount -> 327750
         quantity: 1
       });
     expect([200, 201]).toContain(addCartRes.status);

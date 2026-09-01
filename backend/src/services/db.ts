@@ -186,7 +186,7 @@ class InMemoryDatabase {
 
   products: ProductRecord[] = [
     {
-      id: 'p0000000-0000-0000-0000-000000000001',
+      id: 'f0000000-0000-0000-0000-000000000001',
       categoryId: 'c0000000-0000-0000-0000-000000000001',
       name: 'Royal Temple Lakshmi Necklace',
       slug: 'royal-temple-lakshmi-necklace',
@@ -211,7 +211,7 @@ class InMemoryDatabase {
       ]
     },
     {
-      id: 'p0000000-0000-0000-0000-000000000002',
+      id: 'f0000000-0000-0000-0000-000000000002',
       categoryId: 'c0000000-0000-0000-0000-000000000002',
       name: 'Eternal Radiance Solitaire Ring',
       slug: 'eternal-radiance-solitaire-ring',
@@ -235,7 +235,7 @@ class InMemoryDatabase {
       ]
     },
     {
-      id: 'p0000000-0000-0000-0000-000000000003',
+      id: 'f0000000-0000-0000-0000-000000000003',
       categoryId: 'c0000000-0000-0000-0000-000000000003',
       name: 'Heritage Emerald Kundan Choker',
       slug: 'heritage-emerald-kundan-choker',
@@ -259,7 +259,7 @@ class InMemoryDatabase {
       ]
     },
     {
-      id: 'p0000000-0000-0000-0000-000000000004',
+      id: 'f0000000-0000-0000-0000-000000000004',
       categoryId: 'c0000000-0000-0000-0000-000000000004',
       name: 'Celestial Sapphire Drop Earrings',
       slug: 'celestial-sapphire-earrings',
@@ -292,7 +292,7 @@ class InMemoryDatabase {
   orders: OrderRecord[] = [];
   offers: OfferRecord[] = [
     {
-      id: 'o0000000-0000-0000-0000-000000000001',
+      id: 'e0000000-0000-0000-0000-000000000001',
       title: 'Royal Festal Offer',
       description: 'Enjoy 10% off on all Temple Gold collections',
       code: 'ROYAL10',
@@ -302,7 +302,7 @@ class InMemoryDatabase {
       updatedAt: new Date().toISOString()
     },
     {
-      id: 'o0000000-0000-0000-0000-000000000002',
+      id: 'e0000000-0000-0000-0000-000000000002',
       title: 'Welcome Luxury Gift',
       description: '5% flat discount on Solitaire purchases',
       code: 'WELCOMEVJ',
@@ -316,7 +316,7 @@ class InMemoryDatabase {
   auditLogs: AuditLogRecord[] = [];
   metalRates: MetalRateRecord[] = [
     {
-      id: 'mr000000-0000-0000-0000-000000000001',
+      id: 'd0000000-0000-0000-0000-000000000001',
       gold24kPerGram: 7350.00,
       gold22kPerGram: 6738.00,
       gold18kPerGram: 5512.00,
