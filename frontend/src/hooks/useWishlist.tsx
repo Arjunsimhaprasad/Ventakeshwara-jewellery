@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { useAuth } from './useAuth';
+import { apiFetch } from '../services/api';
 
 interface WishlistContextType {
   wishlistProductIds: string[];
@@ -21,7 +22,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     }
 
     try {
-      const res = await fetch('/api/wishlist', {
+      const res = await apiFetch('/api/wishlist', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
@@ -53,12 +54,12 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
     try {
       if (exists) {
-        await fetch(`/api/wishlist/items/${productId}`, {
+        await apiFetch(`/api/wishlist/items/${productId}`, {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${token}` }
         });
       } else {
-        await fetch('/api/wishlist/items', {
+        await apiFetch('/api/wishlist/items', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

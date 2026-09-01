@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Sparkles, ArrowRight, ShieldCheck, Award, Crown, Eye } from 'lucide-react';
 import { ProductCard } from '../../components/common/ProductCard';
+import { apiFetch } from '../../services/api';
 
 interface HomePageProps {
   onOpenAIChat: () => void;
@@ -18,12 +19,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAIChat }) => {
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0.7]);
 
   useEffect(() => {
-    fetch('/api/products?featured=true')
+    apiFetch('/api/products?featured=true')
       .then(res => res.json())
       .then(data => setFeaturedProducts(Array.isArray(data) ? data : []))
       .catch(err => console.error(err));
 
-    fetch('/api/categories')
+    apiFetch('/api/categories')
       .then(res => res.json())
       .then(data => setCategories(Array.isArray(data) ? data : []))
       .catch(err => console.error(err));

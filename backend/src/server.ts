@@ -31,7 +31,19 @@ if (process.env.MONGODB_URI) {
 // Security & Middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || '*',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like server-to-server or mobile calls)
+    if (!origin) return callback(null, true);
+    const configured = process.env.FRONTEND_URL;
+    if (!configured || configured === '*') {
+      return callback(null, true);
+    }
+    const allowed = configured.split(',').map(u => u.trim());
+    if (allowed.includes(origin) || origin.endsWith('.vercel.app') || origin.includes('localhost')) {
+      return callback(null, true);
+    }
+    callback(null, true);
+  },
   credentials: true
 }));
 app.use(express.json());
