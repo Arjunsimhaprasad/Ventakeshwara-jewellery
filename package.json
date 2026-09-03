@@ -16,5 +16,9 @@
     "build": "npm run build:backend && npm run build:frontend",
     "start": "cd backend && npm start",
     "test": "cd backend && npm test"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.62.5",
+    "@rollup/rollup-linux-x64-musl": "^4.62.5"
   }
 }
