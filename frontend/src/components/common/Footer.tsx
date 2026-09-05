@@ -76,8 +76,8 @@ export const Footer: React.FC = () => {
           <div>
             <h5 className="font-serif text-slate-200 font-semibold text-xs tracking-wider uppercase mb-4">Store Portal</h5>
             <ul className="space-y-2 text-xs">
-              <li><Link to="/login" className="hover:text-gold-300 transition-colors">Account Login</Link></li>
-              <li><Link to="/admin" className="hover:text-gold-300 transition-colors">Admin & Staff Portal</Link></li>
+              <li><Link to="/login?mode=customer" className="hover:text-gold-300 transition-colors">Customer Login</Link></li>
+              <li><Link to="/login?mode=admin" className="hover:text-gold-300 transition-colors">Admin & Staff Portal</Link></li>
               <li><span className="text-gold-400 font-semibold">AI Assistant: Active</span></li>
             </ul>
           </div>

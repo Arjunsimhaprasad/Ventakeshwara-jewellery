@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Coins, TrendingUp, TrendingDown, RefreshCw, Save, Calculator, Clock, ShieldCheck, Info, CheckCircle2, AlertCircle, ArrowUpRight, Sparkles } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { apiFetch } from '../../services/api';
 
 interface MetalRate {
   id: string;
@@ -39,8 +40,8 @@ export const GoldRatesPage: React.FC = () => {
     setErrorMsg(null);
     try {
       const [todayRes, historyRes] = await Promise.all([
-        fetch('/api/rates/today'),
-        fetch('/api/rates/history')
+        apiFetch('/api/rates/today'),
+        apiFetch('/api/rates/history')
       ]);
 
       if (todayRes.ok) {
@@ -104,7 +105,6 @@ export const GoldRatesPage: React.FC = () => {
     setSuccessMsg(null);
     setErrorMsg(null);
 
-    const token = localStorage.getItem('token');
     const payload = {
       gold24kPerGram: parseFloat(gold24k),
       gold22kPerGram: parseFloat(gold22k),
@@ -123,17 +123,19 @@ export const GoldRatesPage: React.FC = () => {
     }
 
     try {
-      const res = await fetch('/api/rates', {
+      const res = await apiFetch('/api/rates', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
       });
 
       const data = await res.json();
       if (!res.ok) {
+        if (res.status === 401) {
+          throw new Error('Your login session has expired. Please sign out and log back in as Owner.');
+        }
         throw new Error(data.message || 'Failed to update daily rates');
       }
 

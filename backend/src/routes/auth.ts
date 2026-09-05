@@ -136,6 +136,58 @@ router.post('/login', authRateLimiter, async (req: Request, res: Response, next)
   }
 });
 
+// POST /api/auth/google
+router.post('/google', authRateLimiter, async (req: Request, res: Response, next) => {
+  try {
+    const { email, fullName, googleId, avatarUrl } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Bad Request', message: 'Email is required for Google sign-in' });
+    }
+
+    let profile = db.profiles.find(p => p.email.toLowerCase() === email.toLowerCase());
+
+    if (!profile) {
+      // Create new customer profile for Google sign in
+      const newId = `g_${googleId || Date.now()}`;
+      profile = {
+        id: newId,
+        fullName: fullName || email.split('@')[0],
+        email: email.toLowerCase(),
+        passwordHash: '',
+        role: 'customer',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      db.profiles.push(profile);
+
+      // Create cart & wishlist
+      db.carts.push({ id: `cart-${newId}`, userId: newId });
+      db.wishlists.push({ id: `wl-${newId}`, userId: newId });
+    }
+
+    const token = jwt.sign(
+      { id: profile.id, email: profile.email, fullName: profile.fullName, role: profile.role },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN as any }
+    );
+
+    return res.json({
+      message: 'Google login successful',
+      token,
+      user: {
+        id: profile.id,
+        fullName: profile.fullName,
+        email: profile.email,
+        role: profile.role,
+        phone: profile.phone
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // POST /api/auth/logout
 router.post('/logout', (req: Request, res: Response) => {
   return res.json({ message: 'Logout successful' });
