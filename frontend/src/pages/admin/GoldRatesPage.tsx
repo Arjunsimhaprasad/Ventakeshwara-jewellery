@@ -178,7 +178,7 @@ export const GoldRatesPage: React.FC = () => {
             <div>
               <h1 className="font-serif text-2xl sm:text-3xl font-bold gold-gradient-text">Daily Gold Price Management</h1>
               <p className="text-xs text-slate-400 mt-0.5">
-                Set and update today's live bullion market rates for Venkateshwara Jewellery.
+                Set and publish today's daily store gold and silver rates manually as Store Owner.
               </p>
             </div>
           </div>
@@ -190,7 +190,7 @@ export const GoldRatesPage: React.FC = () => {
           className="self-start sm:self-auto bg-slate-800/80 hover:bg-slate-800 text-slate-300 text-xs px-4 py-2.5 rounded-xl border border-slate-700/80 flex items-center gap-2 transition-colors disabled:opacity-50"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-          Refresh Live Data
+          Reload Store Rates
         </button>
       </div>
 

@@ -57,7 +57,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
             <span className="hidden md:inline text-slate-400">|</span>
             <span className="hidden md:flex items-center gap-2 text-slate-300">
               <Coins className="w-3 h-3 text-gold-400" />
-              Today's Live Rates:
+              Today's Store Rates (Owner Set):
               <strong className="text-gold-300 font-bold">22K: ₹{todayRates.gold22kPerGram.toLocaleString('en-IN')}/g</strong>
               <span className="text-slate-500">•</span>
               <strong className="text-amber-300">24K: ₹{todayRates.gold24kPerGram.toLocaleString('en-IN')}/g</strong>
