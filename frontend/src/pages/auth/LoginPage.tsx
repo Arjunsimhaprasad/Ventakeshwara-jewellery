@@ -15,9 +15,19 @@ export const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const navigate = useNavigate();
   const redirect = searchParams.get('redirect') || '/';
+
+  useEffect(() => {
+    if (user) {
+      if (['admin', 'owner', 'staff'].includes(user.role)) {
+        navigate('/admin', { replace: true });
+      } else {
+        navigate(redirect, { replace: true });
+      }
+    }
+  }, [user, navigate, redirect]);
 
   useEffect(() => {
     const modeParam = searchParams.get('mode');

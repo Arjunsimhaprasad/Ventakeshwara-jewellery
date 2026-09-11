@@ -30,8 +30,9 @@ router.get('/today', async (req: Request, res: Response, next) => {
       }
     }
 
-    // Fallback to in-memory db
-    const latest = db.metalRates[db.metalRates.length - 1] || {
+    // Fallback to in-memory db (sort descending by createdAt)
+    const sorted = [...db.metalRates].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    const latest = sorted[0] || {
       id: 'mr000000-0000-0000-0000-000000000001',
       gold24kPerGram: 7350.00,
       gold22kPerGram: 6738.00,

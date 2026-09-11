@@ -4,6 +4,7 @@ import { Sparkles } from 'lucide-react';
 import { AuthProvider } from './hooks/useAuth';
 import { CartProvider } from './hooks/useCart';
 import { WishlistProvider } from './hooks/useWishlist';
+import { ProtectedRoute } from './components/common/ProtectedRoute';
 
 // Common Components
 import { Navbar } from './components/common/Navbar';
@@ -44,11 +45,33 @@ export function App() {
           <Router>
             <div className="min-h-screen flex flex-col bg-[#0B0F17] text-slate-100 selection:bg-gold-500 selection:text-slate-950 font-sans relative">
               <Routes>
-                {/* Storefront Customer Routes */}
+                {/* Public Authentication Gateway */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+
+                {/* Protected Admin/Owner Portal Routes */}
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute allowedRoles={['staff', 'admin', 'owner']}>
+                      <AdminLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="gold-rates" element={<AdminGoldRates />} />
+                  <Route path="products" element={<AdminProducts />} />
+                  <Route path="orders" element={<AdminOrders />} />
+                  <Route path="offers" element={<AdminOffers />} />
+                  <Route path="customers" element={<AdminCustomers />} />
+                  <Route path="support" element={<AdminSupport />} />
+                </Route>
+
+                {/* Protected Storefront Customer Routes */}
                 <Route
                   path="/*"
                   element={
-                    <>
+                    <ProtectedRoute>
                       <Navbar onOpenAIChat={() => setIsAIChatOpen(true)} />
                       <main className="flex-1">
                         <Routes>
@@ -59,8 +82,6 @@ export function App() {
                           <Route path="/checkout" element={<CheckoutPage />} />
                           <Route path="/orders" element={<OrdersPage />} />
                           <Route path="/support" element={<SupportPage />} />
-                          <Route path="/login" element={<LoginPage />} />
-                          <Route path="/register" element={<RegisterPage />} />
                         </Routes>
                       </main>
 
@@ -75,25 +96,14 @@ export function App() {
                       </button>
 
                       <Footer />
-                    </>
+
+                      {/* Drawers & Floating Modals */}
+                      <CartDrawer />
+                      <AIChatModal isOpen={isAIChatOpen} onClose={() => setIsAIChatOpen(false)} />
+                    </ProtectedRoute>
                   }
                 />
-
-                {/* Admin/Owner Portal Routes */}
-                <Route path="/admin" element={<AdminLayout />}>
-                  <Route index element={<AdminDashboard />} />
-                  <Route path="gold-rates" element={<AdminGoldRates />} />
-                  <Route path="products" element={<AdminProducts />} />
-                  <Route path="orders" element={<AdminOrders />} />
-                  <Route path="offers" element={<AdminOffers />} />
-                  <Route path="customers" element={<AdminCustomers />} />
-                  <Route path="support" element={<AdminSupport />} />
-                </Route>
               </Routes>
-
-              {/* Drawers & Floating Modals */}
-              <CartDrawer />
-              <AIChatModal isOpen={isAIChatOpen} onClose={() => setIsAIChatOpen(false)} />
             </div>
           </Router>
         </WishlistProvider>

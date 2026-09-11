@@ -4,6 +4,7 @@ import { ShoppingBag, Heart, Sparkles, User, Search, ShieldCheck, LogOut, Menu, 
 import { useAuth } from '../../hooks/useAuth';
 import { useCart } from '../../hooks/useCart';
 import { useWishlist } from '../../hooks/useWishlist';
+import { apiFetch } from '../../services/api';
 
 interface NavbarProps {
   onOpenAIChat: () => void;
@@ -23,19 +24,39 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
     silverPerGram: 88
   });
 
-  useEffect(() => {
-    fetch('/api/rates/today')
+  const loadTodayRates = () => {
+    apiFetch('/api/rates/today')
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data && data.gold22kPerGram) {
           setTodayRates({
-            gold22kPerGram: data.gold22kPerGram,
-            gold24kPerGram: data.gold24kPerGram,
-            silverPerGram: data.silverPerGram
+            gold22kPerGram: Number(data.gold22kPerGram),
+            gold24kPerGram: Number(data.gold24kPerGram),
+            silverPerGram: Number(data.silverPerGram)
           });
         }
       })
       .catch(() => {});
+  };
+
+  useEffect(() => {
+    loadTodayRates();
+
+    const handleRateUpdate = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      if (customEvent.detail && customEvent.detail.gold22kPerGram) {
+        setTodayRates({
+          gold22kPerGram: Number(customEvent.detail.gold22kPerGram),
+          gold24kPerGram: Number(customEvent.detail.gold24kPerGram),
+          silverPerGram: Number(customEvent.detail.silverPerGram)
+        });
+      } else {
+        loadTodayRates();
+      }
+    };
+
+    window.addEventListener('vj_rates_updated', handleRateUpdate);
+    return () => window.removeEventListener('vj_rates_updated', handleRateUpdate);
   }, []);
 
   const handleSearchSubmit = (e: React.FormEvent) => {

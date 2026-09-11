@@ -143,6 +143,11 @@ export const GoldRatesPage: React.FC = () => {
       setNotes('');
       await fetchRates();
 
+      // Dispatch global event so Navbar & UI components update in real-time
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('vj_rates_updated', { detail: data.rate }));
+      }
+
       // Clear success notification after 5 seconds
       setTimeout(() => setSuccessMsg(null), 5000);
     } catch (err: any) {
