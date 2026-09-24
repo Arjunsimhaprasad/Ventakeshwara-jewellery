@@ -105,18 +105,23 @@ export const GoldRatesPage: React.FC = () => {
     setSuccessMsg(null);
     setErrorMsg(null);
 
-    const payload = {
-      gold24kPerGram: parseFloat(gold24k),
-      gold22kPerGram: parseFloat(gold22k),
-      gold18kPerGram: parseFloat(gold18k),
-      silverPerGram: parseFloat(silver),
-      notes: notes.trim() || `Daily bullion update by ${user?.fullName || 'Admin'}`
+    const cleanNum = (val: string | number) => {
+      const parsed = parseFloat(String(val).replace(/,/g, '').trim());
+      return isNaN(parsed) ? 0 : parsed;
     };
 
-    if (isNaN(payload.gold24kPerGram) || payload.gold24kPerGram <= 0 ||
-        isNaN(payload.gold22kPerGram) || payload.gold22kPerGram <= 0 ||
-        isNaN(payload.gold18kPerGram) || payload.gold18kPerGram <= 0 ||
-        isNaN(payload.silverPerGram) || payload.silverPerGram <= 0) {
+    const payload = {
+      gold24kPerGram: cleanNum(gold24k),
+      gold22kPerGram: cleanNum(gold22k),
+      gold18kPerGram: cleanNum(gold18k),
+      silverPerGram: cleanNum(silver),
+      notes: notes.trim() || `Daily bullion update by ${user?.fullName || 'Owner'}`
+    };
+
+    if (payload.gold24kPerGram <= 0 ||
+        payload.gold22kPerGram <= 0 ||
+        payload.gold18kPerGram <= 0 ||
+        payload.silverPerGram <= 0) {
       setErrorMsg('Please enter valid positive numbers for all metal rates.');
       setSaving(false);
       return;
@@ -136,7 +141,10 @@ export const GoldRatesPage: React.FC = () => {
         if (res.status === 401) {
           throw new Error('Your login session has expired. Please sign out and log back in as Owner.');
         }
-        throw new Error(data.message || 'Failed to update daily rates');
+        if (res.status === 403) {
+          throw new Error('Access Denied: Store Owner or Admin privileges required to update metal rates.');
+        }
+        throw new Error(data.message || data.error || 'Failed to update daily rates');
       }
 
       setSuccessMsg("Current day's gold & silver rates updated successfully!");

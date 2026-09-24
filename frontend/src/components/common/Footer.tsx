@@ -34,11 +34,13 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8 py-12">
           {/* Brand Info */}
           <div className="md:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-gold-500 text-slate-950 font-serif font-bold text-lg flex items-center justify-center">
-                V
-              </div>
-              <span className="font-serif text-xl font-bold gold-gradient-text">VENKATESHWARA JEWELLERY</span>
+            <div className="flex items-center gap-3.5">
+              <img 
+                src="/logo-emblem.png" 
+                alt="Venkateshwaraa Jewellery" 
+                className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(212,175,55,0.4)]"
+              />
+              <span className="font-serif text-xl font-bold gold-gradient-text tracking-wider">VENKATESHWARAA JEWELLERY</span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed pr-6">
               Crafting timeless Indian heritage gold, solitaire diamonds, and uncut Polki Kundan masterpieces since 1978. Rooted in tradition, elevated by modern technology.
@@ -85,7 +87,7 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Copyright */}
         <div className="pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-          <p>© {new Date().getFullYear()} Venkateshwara Jewellery Pvt Ltd. All Rights Reserved.</p>
+          <p>© {new Date().getFullYear()} Venkateshwaraa Jewellery Pvt Ltd. All Rights Reserved.</p>
           <div className="flex gap-6">
             <span>Privacy Policy</span>
             <span>Terms of Service</span>

@@ -114,14 +114,19 @@ router.post('/', authenticate, requireRole('staff', 'admin', 'owner'), async (re
     });
 
     if (supabase) {
-      await supabase.from('daily_metal_rates').insert({
-        gold_24k_per_gram: data.gold24kPerGram,
-        gold_22k_per_gram: data.gold22kPerGram,
-        gold_18k_per_gram: data.gold18kPerGram,
-        silver_per_gram: data.silverPerGram,
-        notes: newRateRecord.notes,
-        updated_by: userId
-      });
+      try {
+        const isValidUuid = userId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId);
+        await supabase.from('daily_metal_rates').insert({
+          gold_24k_per_gram: data.gold24kPerGram,
+          gold_22k_per_gram: data.gold22kPerGram,
+          gold_18k_per_gram: data.gold18kPerGram,
+          silver_per_gram: data.silverPerGram,
+          notes: newRateRecord.notes,
+          ...(isValidUuid ? { updated_by: userId } : {})
+        });
+      } catch (sbErr) {
+        console.warn('Supabase daily_metal_rates insert warning:', sbErr);
+      }
     }
 
     return res.status(201).json({

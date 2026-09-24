@@ -75,9 +75,11 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose }) => 
         {/* Header */}
         <div className="p-4 bg-gradient-to-r from-emerald-950 via-slate-900 to-burgundy-950 border-b border-gold-500/20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gold-500/20 border border-gold-400/50 flex items-center justify-center text-gold-400">
-              <Sparkles className="w-5 h-5 animate-pulse" />
-            </div>
+            <img 
+              src="/logo-emblem.png" 
+              alt="Ratna Concierge Logo" 
+              className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(212,175,55,0.5)]" 
+            />
             <div>
               <h3 className="font-serif font-bold text-slate-100 flex items-center gap-2">
                 Ratna <span className="text-[10px] bg-gold-500/20 text-gold-300 px-2 py-0.5 rounded-full border border-gold-500/30">AI Jewellery Concierge</span>

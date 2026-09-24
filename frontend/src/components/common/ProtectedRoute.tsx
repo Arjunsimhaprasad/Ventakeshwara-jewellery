@@ -17,15 +17,17 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowe
     return (
       <div className="min-h-screen bg-[#0B0F17] flex flex-col items-center justify-center p-6 text-slate-100 selection:bg-gold-500 selection:text-slate-950">
         <div className="relative flex items-center justify-center mb-6">
-          <div className="w-20 h-20 rounded-full bg-gold-500/10 border border-gold-500/30 animate-ping absolute" />
-          <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-gold-600 via-gold-400 to-amber-300 text-slate-950 font-serif font-extrabold text-3xl flex items-center justify-center shadow-gold-glow relative z-10 animate-pulse">
-            V
-          </div>
+          <div className="w-24 h-24 rounded-full bg-gold-500/10 border border-gold-500/30 animate-ping absolute" />
+          <img 
+            src="/logo-emblem.png" 
+            alt="Venkateshwaraa Logo" 
+            className="w-20 h-20 object-contain relative z-10 animate-pulse drop-shadow-[0_0_20px_rgba(212,175,55,0.6)]" 
+          />
         </div>
 
         <div className="text-center space-y-2 max-w-sm">
-          <h3 className="font-serif text-lg font-bold gold-gradient-text tracking-wide">
-            VENKATESHWARA JEWELLERY
+          <h3 className="font-serif text-lg font-bold gold-gradient-text tracking-widest">
+            VENKATESHWARAA JEWELLERY
           </h3>
           <p className="text-xs text-slate-400 flex items-center justify-center gap-2">
             <Sparkles className="w-3.5 h-3.5 text-gold-400 animate-spin" />

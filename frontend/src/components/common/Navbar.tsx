@@ -108,15 +108,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
       {/* Main Navbar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         {/* Brand Logo */}
-        <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-400 via-gold-600 to-amber-800 flex items-center justify-center font-serif text-slate-950 font-bold text-xl shadow-gold-glow group-hover:scale-105 transition-transform">
-            V
+        <Link to="/" className="flex items-center gap-3.5 group">
+          <div className="relative flex items-center justify-center">
+            <img 
+              src="/logo-emblem.png" 
+              alt="Venkateshwaraa Jewellery Logo" 
+              className="w-11 h-11 object-contain drop-shadow-[0_0_12px_rgba(212,175,55,0.4)] group-hover:scale-105 transition-transform duration-300"
+            />
           </div>
           <div>
-            <span className="font-serif text-xl sm:text-2xl font-bold tracking-wider gold-gradient-text block">
-              VENKATESHWARA
+            <span className="font-serif text-xl sm:text-2xl font-bold tracking-wider gold-gradient-text block leading-none">
+              VENKATESHWARAA
             </span>
-            <span className="text-[10px] font-sans tracking-widest text-slate-400 uppercase -mt-1 block">
+            <span className="text-[10px] font-sans tracking-[0.2em] text-slate-400 uppercase mt-0.5 block">
               Jewellery • Est. 1978
             </span>
           </div>

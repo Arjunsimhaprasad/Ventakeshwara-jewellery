@@ -45,13 +45,15 @@ export const AdminLayout: React.FC = () => {
       {/* Sidebar */}
       <aside className="w-64 bg-[#0D1320] border-r border-slate-800 flex flex-col justify-between hidden md:flex">
         <div className="p-6 space-y-8">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-gold-500 text-slate-950 font-serif font-bold text-lg flex items-center justify-center">
-              V
-            </div>
+          <Link to="/" className="flex items-center gap-3 group">
+            <img 
+              src="/logo-emblem.png" 
+              alt="Venkateshwaraa Logo" 
+              className="w-9 h-9 object-contain drop-shadow-[0_0_8px_rgba(212,175,55,0.4)] group-hover:scale-105 transition-transform" 
+            />
             <div>
-              <span className="font-serif font-bold gold-gradient-text text-sm block">VENKATESHWARA</span>
-              <span className="text-[10px] text-slate-400 uppercase tracking-widest block">Store Admin Portal</span>
+              <span className="font-serif font-bold gold-gradient-text text-sm block leading-none">VENKATESHWARAA</span>
+              <span className="text-[10px] text-slate-400 uppercase tracking-widest block mt-0.5">Admin & Management</span>
             </div>
           </Link>
 

@@ -49,12 +49,14 @@ export const RegisterPage: React.FC = () => {
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md glass-panel p-8 rounded-3xl border border-gold-500/30 space-y-6 shadow-2xl">
-        <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-full bg-gold-500 text-slate-950 font-serif font-bold text-2xl flex items-center justify-center mx-auto shadow-gold-glow">
-            V
-          </div>
-          <h2 className="font-serif text-2xl font-bold gold-gradient-text">Create Account</h2>
-          <p className="text-slate-400 text-xs">Join Venkateshwara Fine Jewellery</p>
+        <div className="text-center space-y-3">
+          <img 
+            src="/logo-emblem.png" 
+            alt="Venkateshwaraa Jewellery Logo" 
+            className="w-16 h-16 object-contain mx-auto drop-shadow-[0_0_15px_rgba(212,175,55,0.5)] animate-pulse-subtle" 
+          />
+          <h2 className="font-serif text-2xl font-bold gold-gradient-text tracking-wide">Create Account</h2>
+          <p className="text-slate-400 text-xs">Join Venkateshwaraa Fine Jewellery</p>
         </div>
 
         {error && (
