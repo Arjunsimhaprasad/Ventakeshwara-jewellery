@@ -29,15 +29,17 @@ export const Product3DViewer: React.FC<Product3DViewerProps> = ({ modelUrl, imag
     'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80'
   ];
 
-  const handlePointerDown = (e: React.PointerEvent) => {
+  const handlePointerDown = (e: React.PointerEvent | React.TouchEvent) => {
     setIsDragging(true);
-    startXRef.current = e.clientX;
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    startXRef.current = clientX;
   };
 
-  const handlePointerMove = (e: React.PointerEvent) => {
+  const handlePointerMove = (e: React.PointerEvent | React.TouchEvent) => {
     if (!isDragging) return;
-    const deltaX = e.clientX - startXRef.current;
-    if (Math.abs(deltaX) > 15) {
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const deltaX = clientX - startXRef.current;
+    if (Math.abs(deltaX) > 12) {
       const direction = deltaX > 0 ? 1 : -1;
       setSpriteFrame(prev => {
         const next = prev + direction;
@@ -45,7 +47,7 @@ export const Product3DViewer: React.FC<Product3DViewerProps> = ({ modelUrl, imag
         if (next >= defaultSpriteAngles.length) return 0;
         return next;
       });
-      startXRef.current = e.clientX;
+      startXRef.current = clientX;
     }
   };
 
@@ -109,16 +111,19 @@ export const Product3DViewer: React.FC<Product3DViewerProps> = ({ modelUrl, imag
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerLeave={handlePointerUp}
-            className="w-full h-full cursor-grab active:cursor-grabbing select-none relative flex items-center justify-center p-8"
+            onTouchStart={handlePointerDown}
+            onTouchMove={handlePointerMove}
+            onTouchEnd={handlePointerUp}
+            className="w-full h-full cursor-grab active:cursor-grabbing select-none relative flex items-center justify-center p-6 sm:p-8 touch-none"
           >
             <img
               src={defaultSpriteAngles[spriteFrame]}
               alt={`${productName} Angle ${spriteFrame + 1}`}
-              className="max-h-full max-w-full object-contain filter drop-shadow-2xl transition-transform duration-100"
+              className="max-h-full max-w-full object-contain filter drop-shadow-2xl transition-transform duration-100 pointer-events-none"
             />
 
             {/* Instruction Overlay Pill */}
-            <div className="absolute bottom-4 z-10 glass-panel px-4 py-1.5 rounded-full text-slate-300 text-xs flex items-center gap-2 pointer-events-none">
+            <div className="absolute bottom-4 z-10 glass-panel px-4 py-1.5 rounded-full text-slate-300 text-[11px] sm:text-xs flex items-center gap-2 pointer-events-none">
               <RotateCw className="w-3.5 h-3.5 text-gold-400 animate-spin-slow" /> Drag horizontally to rotate 360° ({spriteFrame + 1}/{defaultSpriteAngles.length})
             </div>
           </div>

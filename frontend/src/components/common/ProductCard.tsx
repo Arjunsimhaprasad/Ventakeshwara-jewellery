@@ -104,20 +104,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           />
         </button>
 
-        {/* Hover Quick Action overlay */}
-        <div className="absolute inset-x-3 bottom-3 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 flex gap-2">
+        {/* Quick Action Overlay (Visible on mobile touch screens, hover-revealed on desktop) */}
+        <div className="absolute inset-x-3 bottom-3 z-10 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-0 sm:translate-y-2 group-hover:translate-y-0 flex gap-2">
           <Link
             to={`/products/${id}`}
-            className="flex-1 bg-slate-900/80 hover:bg-slate-900 text-slate-200 text-xs font-medium py-2.5 rounded-xl border border-slate-700 flex items-center justify-center gap-1.5 transition-colors"
+            className="flex-1 bg-slate-900/90 hover:bg-slate-900 text-slate-200 text-[11px] sm:text-xs font-medium py-2.5 rounded-xl border border-slate-700/90 flex items-center justify-center gap-1 sm:gap-1.5 transition-colors backdrop-blur-sm"
           >
-            <Eye className="w-3.5 h-3.5" /> View Specs
+            <Eye className="w-3.5 h-3.5 text-gold-400" /> View Specs
           </Link>
           <button
             onClick={handleAddToCart}
             disabled={stockQuantity === 0}
             className={`flex-1 ${
               isAddingToCart ? 'scale-105 bg-gold-400' : 'bg-gold-500 hover:bg-gold-400'
-            } text-slate-950 text-xs font-bold py-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-gold-glow disabled:opacity-50`}
+            } text-slate-950 text-[11px] sm:text-xs font-bold py-2.5 rounded-xl flex items-center justify-center gap-1 sm:gap-1.5 transition-all shadow-gold-glow disabled:opacity-50`}
           >
             <ShoppingBag className="w-3.5 h-3.5" /> {stockQuantity === 0 ? 'Out of Stock' : 'Add to Bag'}
           </button>

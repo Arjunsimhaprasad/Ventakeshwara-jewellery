@@ -1,12 +1,12 @@
-import React from 'react';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingBag, Tag, Users, LifeBuoy, Sparkles, Store, LogOut, ShieldAlert, Coins } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { LayoutDashboard, Package, ShoppingBag, Tag, Users, LifeBuoy, Store, LogOut, ShieldAlert, Coins, Menu, X } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
 export const AdminLayout: React.FC = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
-  const navigate = useNavigate();
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   if (!user || !['staff', 'admin', 'owner'].includes(user.role)) {
     return (
@@ -41,9 +41,9 @@ export const AdminLayout: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#090D16] text-slate-100 flex">
-      {/* Sidebar */}
-      <aside className="w-64 bg-[#0D1320] border-r border-slate-800 flex flex-col justify-between hidden md:flex">
+    <div className="min-h-screen bg-[#090D16] text-slate-100 flex flex-col md:flex-row">
+      {/* Desktop Sidebar */}
+      <aside className="w-64 bg-[#0D1320] border-r border-slate-800 flex-col justify-between hidden md:flex shrink-0">
         <div className="p-6 space-y-8">
           <Link to="/" className="flex items-center gap-3 group">
             <img 
@@ -100,32 +100,104 @@ export const AdminLayout: React.FC = () => {
         </div>
       </aside>
 
+      {/* Mobile Drawer (Tablet & Smartphone) */}
+      {isMobileNavOpen && (
+        <div className="md:hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex">
+          <div className="w-72 bg-[#0D1320] border-r border-slate-800 h-full p-6 flex flex-col justify-between shadow-2xl">
+            <div className="space-y-6">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+                <Link to="/" onClick={() => setIsMobileNavOpen(false)} className="flex items-center gap-3">
+                  <img src="/logo-emblem.png" alt="Venkateshwaraa" className="w-8 h-8 object-contain" />
+                  <span className="font-serif font-bold gold-gradient-text text-xs">VENKATESHWARAA ADMIN</span>
+                </Link>
+                <button onClick={() => setIsMobileNavOpen(false)} className="p-1.5 text-slate-400 hover:text-white">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <nav className="space-y-1.5">
+                {navItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = location.pathname === item.path;
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      onClick={() => setIsMobileNavOpen(false)}
+                      className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-colors ${
+                        isActive
+                          ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                      }`}
+                    >
+                      <Icon className="w-4 h-4" />
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </nav>
+            </div>
+
+            <div className="pt-4 border-t border-slate-800 space-y-3">
+              <div className="glass-panel p-3 rounded-xl flex items-center justify-between text-xs">
+                <div>
+                  <p className="font-semibold text-slate-200 truncate">{user.fullName}</p>
+                  <span className="text-[10px] text-gold-400 uppercase font-bold">{user.role}</span>
+                </div>
+                <button onClick={logout} className="text-slate-400 hover:text-rose-400 p-1">
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+
+              <Link
+                to="/"
+                onClick={() => setIsMobileNavOpen(false)}
+                className="w-full bg-slate-800 text-slate-300 text-xs font-semibold py-2.5 rounded-xl flex items-center justify-center gap-1.5"
+              >
+                <Store className="w-3.5 h-3.5" /> Switch to Customer Store
+              </Link>
+            </div>
+          </div>
+
+          <div className="flex-1" onClick={() => setIsMobileNavOpen(false)} />
+        </div>
+      )}
+
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         {/* Top Header */}
-        <header className="h-16 border-b border-slate-800 bg-[#0D1320]/80 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-30">
-          <div className="flex items-center gap-2">
-            <span className="bg-gold-500/20 text-gold-300 text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-gold-500/30 uppercase">
+        <header className="h-16 border-b border-slate-800 bg-[#0D1320]/90 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsMobileNavOpen(true)}
+              className="md:hidden p-2 text-slate-300 hover:text-gold-300 rounded-lg bg-slate-800/80 border border-slate-700 min-w-[44px] min-h-[44px] flex items-center justify-center"
+              aria-label="Open portal navigation"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+
+            <span className="bg-gold-500/20 text-gold-300 text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-gold-500/30 uppercase whitespace-nowrap">
               Role: {user.role}
             </span>
-            <span className="text-xs text-slate-400">| Venkateshwara Commerce System</span>
+            <span className="text-xs text-slate-400 hidden sm:inline">| Venkateshwaraa Commerce Portal</span>
           </div>
 
           <div className="flex items-center gap-4">
             <Link
               to="/"
-              className="text-xs text-gold-400 hover:underline flex items-center gap-1 font-medium"
+              className="text-xs text-gold-400 hover:underline flex items-center gap-1 font-medium whitespace-nowrap"
             >
-              <Store className="w-3.5 h-3.5" /> Switch to Customer View
+              <Store className="w-3.5 h-3.5" /> <span className="hidden xs:inline">Customer Store</span>
             </Link>
           </div>
         </header>
 
         {/* Content Outlet */}
-        <div className="p-6 sm:p-8 flex-1">
+        <div className="p-4 sm:p-6 lg:p-8 flex-1">
           <Outlet />
         </div>
       </main>
     </div>
   );
 };
+

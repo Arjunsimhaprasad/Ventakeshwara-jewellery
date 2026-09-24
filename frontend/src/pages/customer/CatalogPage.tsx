@@ -60,8 +60,10 @@ export const CatalogPage: React.FC = () => {
     setSearchParams({});
   };
 
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6 sm:space-y-8">
       {/* Header */}
       <div className="space-y-2">
         <span className="text-gold-400 text-xs font-semibold tracking-widest uppercase">Catalogue</span>
@@ -69,9 +71,28 @@ export const CatalogPage: React.FC = () => {
         <p className="text-slate-400 text-xs sm:text-sm">Browse 100% BIS Hallmarked gold necklaces, solitaire diamond rings, and Polki Kundan chokers.</p>
       </div>
 
+      {/* Mobile Filter Toggle Button */}
+      <div className="lg:hidden flex items-center justify-between glass-panel p-3.5 rounded-2xl border border-gold-500/20">
+        <button
+          onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
+          className="flex items-center gap-2 text-xs font-bold text-gold-300 bg-gold-500/10 hover:bg-gold-500/20 px-4 py-2 rounded-xl border border-gold-500/30"
+        >
+          <Filter className="w-4 h-4 text-gold-400" />
+          <span>{isMobileFilterOpen ? 'Hide Filters' : 'Filter & Refine Catalogue'}</span>
+          {(selectedCategory || selectedMaterial || selectedPurity || searchQuery) && (
+            <span className="bg-gold-500 text-slate-950 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-extrabold">
+              !
+            </span>
+          )}
+        </button>
+        <span className="text-xs text-slate-400">
+          <strong className="text-gold-400">{products.length}</strong> items
+        </span>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Filter Sidebar */}
-        <div className="glass-panel p-6 rounded-2xl border border-gold-500/20 space-y-6 h-fit">
+        {/* Filter Sidebar (Collapsible on mobile, persistent on lg+) */}
+        <div className={`glass-panel p-6 rounded-2xl border border-gold-500/20 space-y-6 h-fit ${isMobileFilterOpen ? 'block' : 'hidden lg:block'}`}>
           <div className="flex items-center justify-between border-b border-slate-800 pb-4">
             <h3 className="font-serif text-lg font-bold text-slate-100 flex items-center gap-2">
               <Filter className="w-4 h-4 text-gold-400" /> Filter Catalogue
@@ -164,7 +185,7 @@ export const CatalogPage: React.FC = () => {
 
         {/* Product Grid & Sort Controls */}
         <div className="lg:col-span-3 space-y-6">
-          <div className="flex items-center justify-between glass-panel p-4 rounded-xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between glass-panel p-4 rounded-xl gap-3">
             <span className="text-xs text-slate-300 font-medium">
               Showing <strong className="text-gold-400">{products.length}</strong> items
             </span>

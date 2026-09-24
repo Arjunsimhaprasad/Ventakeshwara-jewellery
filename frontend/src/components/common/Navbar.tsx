@@ -69,16 +69,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
   return (
     <header className="sticky top-0 z-40 w-full glass-panel border-b border-gold-500/20 shadow-lg">
       {/* Live Gold Ticker Banner */}
-      <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-burgundy-900 border-b border-gold-500/10 py-1.5 px-4 text-[11px] text-slate-300 font-medium">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3 truncate">
-            <span className="flex items-center gap-1 text-gold-400 font-semibold">
-              <ShieldCheck className="w-3.5 h-3.5 text-gold-500" /> BIS 100% Hallmarked 22K/18K Gold
+      <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-burgundy-900 border-b border-gold-500/10 py-1.5 px-3 sm:px-4 text-[11px] text-slate-300 font-medium">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto no-scrollbar py-0.5 max-w-full">
+            <span className="flex items-center gap-1 text-gold-400 font-semibold whitespace-nowrap">
+              <ShieldCheck className="w-3.5 h-3.5 text-gold-500 shrink-0" /> BIS 100% Hallmarked 22K/18K Gold
             </span>
-            <span className="hidden md:inline text-slate-400">|</span>
-            <span className="hidden md:flex items-center gap-2 text-slate-300">
-              <Coins className="w-3 h-3 text-gold-400" />
-              Today's Store Rates (Owner Set):
+            <span className="text-slate-600 hidden sm:inline">|</span>
+            <span className="flex items-center gap-1.5 text-slate-300 whitespace-nowrap">
+              <Coins className="w-3 h-3 text-gold-400 shrink-0" />
+              <span className="hidden sm:inline">Store Rates:</span>
               <strong className="text-gold-300 font-bold">22K: ₹{todayRates.gold22kPerGram.toLocaleString('en-IN')}/g</strong>
               <span className="text-slate-500">•</span>
               <strong className="text-amber-300">24K: ₹{todayRates.gold24kPerGram.toLocaleString('en-IN')}/g</strong>
@@ -86,17 +86,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
               <strong className="text-slate-300">Silver: ₹{todayRates.silverPerGram.toLocaleString('en-IN')}/g</strong>
             </span>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             <button
               onClick={onOpenAIChat}
-              className="text-gold-300 hover:text-gold-200 flex items-center gap-1 font-semibold transition-colors"
+              className="text-gold-300 hover:text-gold-200 hidden xs:flex items-center gap-1 font-semibold transition-colors"
             >
-              <Sparkles className="w-3 h-3 text-gold-400 animate-pulse" /> Ask AI Concierge "Ratna"
+              <Sparkles className="w-3 h-3 text-gold-400 animate-pulse" /> Ask "Ratna"
             </button>
             {user && ['staff', 'admin', 'owner'].includes(user.role) && (
               <Link
                 to="/admin"
-                className="bg-gold-500/20 hover:bg-gold-500/30 text-gold-300 px-2.5 py-0.5 rounded border border-gold-500/40 text-[10px] font-bold tracking-wider uppercase transition-colors"
+                className="bg-gold-500/20 hover:bg-gold-500/30 text-gold-300 px-2 py-0.5 rounded border border-gold-500/40 text-[10px] font-bold tracking-wider uppercase transition-colors whitespace-nowrap"
               >
                 {user.role} Portal
               </Link>
@@ -213,7 +213,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="sm:hidden p-2 text-slate-300 hover:text-gold-300"
+            className="sm:hidden p-2 text-slate-300 hover:text-gold-300 min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label="Toggle navigation menu"
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -222,32 +223,52 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
 
       {/* Mobile Drawer Menu */}
       {isMobileMenuOpen && (
-        <div className="sm:hidden border-t border-slate-800 bg-slate-900/95 p-4 space-y-3">
+        <div className="sm:hidden border-t border-slate-800 bg-slate-900/95 p-4 space-y-4 shadow-2xl backdrop-blur-md">
           <form onSubmit={handleSearchSubmit} className="relative">
             <input
               type="text"
-              placeholder="Search jewellery..."
+              placeholder="Search gold necklaces, solitaire rings..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-800 text-slate-200 text-xs rounded-lg py-2 pl-9 pr-3"
+              className="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl py-2.5 pl-9 pr-3"
             />
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
           </form>
-          <div className="flex flex-col gap-2 pt-2 text-sm font-medium">
-            <Link to="/catalog" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-200 hover:text-gold-300">
-              Browse Collections
+
+          <div className="flex flex-col gap-2 pt-1 text-sm font-medium">
+            <Link to="/catalog" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800 hover:text-gold-300 flex items-center justify-between">
+              <span>Browse Collections</span>
+              <span className="text-xs text-gold-400 uppercase font-bold">22K / 18K</span>
             </Link>
-            <Link to="/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-200 hover:text-gold-300">
-              My Wishlist ({wishlistProductIds.length})
+            <Link to="/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800 hover:text-gold-300 flex items-center justify-between">
+              <span>My Wishlist</span>
+              <span className="text-xs bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded-full font-bold">{wishlistProductIds.length}</span>
             </Link>
-            <Link to="/orders" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-200 hover:text-gold-300">
-              My Orders & Support
+            <Link to="/orders" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800 hover:text-gold-300 flex items-center gap-2">
+              <User className="w-4 h-4 text-gold-400" />
+              <span>{user ? `My Orders (${user.fullName})` : 'Order History & Tracking'}</span>
             </Link>
+            
+            {user && ['staff', 'admin', 'owner'].includes(user.role) && (
+              <Link
+                to="/admin"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-3 py-2.5 rounded-lg bg-gold-500/10 text-gold-300 border border-gold-500/30 flex items-center justify-between font-bold text-xs uppercase"
+              >
+                <span>Store Management Portal</span>
+                <span className="bg-gold-500 text-slate-950 px-2 py-0.5 rounded text-[10px]">{user.role}</span>
+              </Link>
+            )}
+
             <button
               onClick={() => { setIsMobileMenuOpen(false); onOpenAIChat(); }}
-              className="text-left text-gold-400 font-bold flex items-center gap-1.5"
+              className="mt-2 text-left bg-gradient-to-r from-gold-500/20 via-amber-500/10 to-transparent p-3 rounded-xl text-gold-300 font-bold flex items-center justify-between border border-gold-500/40"
             >
-              <Sparkles className="w-4 h-4" /> Ask AI Concierge "Ratna"
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-gold-400 animate-pulse" />
+                <span>Ask AI Concierge "Ratna"</span>
+              </div>
+              <span className="text-[10px] bg-gold-500 text-slate-950 px-2 py-0.5 rounded font-extrabold uppercase">Live AI</span>
             </button>
           </div>
         </div>

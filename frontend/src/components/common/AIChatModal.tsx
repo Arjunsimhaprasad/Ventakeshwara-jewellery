@@ -70,8 +70,8 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose }) => 
   ];
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-[#0D131F] border border-gold-500/40 rounded-3xl overflow-hidden shadow-2xl flex flex-col h-[650px] relative">
+    <div className="fixed inset-0 z-50 overflow-hidden bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-0 sm:p-4">
+      <div className="w-full h-full sm:h-[650px] sm:max-w-2xl bg-[#0D131F] sm:border sm:border-gold-500/40 rounded-none sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col relative">
         {/* Header */}
         <div className="p-4 bg-gradient-to-r from-emerald-950 via-slate-900 to-burgundy-950 border-b border-gold-500/20 flex items-center justify-between">
           <div className="flex items-center gap-3">

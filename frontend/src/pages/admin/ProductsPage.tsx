@@ -150,7 +150,7 @@ export const ProductsPage: React.FC = () => {
       </div>
 
       {/* Table */}
-      <div className="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+      <div className="glass-panel rounded-2xl border border-slate-800 overflow-x-auto">
         <table className="w-full text-left text-xs text-slate-300">
           <thead className="bg-slate-900/90 text-gold-400 uppercase tracking-wider font-semibold border-b border-slate-800">
             <tr>

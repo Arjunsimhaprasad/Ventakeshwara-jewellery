@@ -60,6 +60,15 @@
   background: #D4AF37;
 }
 
+/* Hide scrollbar for clean mobile touch carousels */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Accessibility reduced motion overrides (§2a) */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
