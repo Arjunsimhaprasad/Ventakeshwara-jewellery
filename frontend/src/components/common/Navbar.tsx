@@ -118,10 +118,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
           </div>
           <div>
             <span className="font-serif text-xl sm:text-2xl font-bold tracking-wider gold-gradient-text block leading-none">
-              VENKATESHWARAA
+              VENKATESHWARA
             </span>
-            <span className="text-[10px] font-sans tracking-[0.2em] text-slate-400 uppercase mt-0.5 block">
-              Jewellery • Est. 1978
+            <span className="text-[10px] font-sans tracking-[0.15em] text-gold-400/90 uppercase mt-0.5 block font-semibold">
+              Customised Jewellery • Est. 1978
             </span>
           </div>
         </Link>
