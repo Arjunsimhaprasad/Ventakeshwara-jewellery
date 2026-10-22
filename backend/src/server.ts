@@ -16,6 +16,8 @@ import offerRoutes from './routes/offers';
 import analyticsRoutes from './routes/analytics';
 import aiRoutes from './routes/ai';
 import ratesRoutes from './routes/rates';
+import catalogueRoutes from './routes/catalogues';
+import enquiryRoutes from './routes/enquiries';
 import { errorHandler } from './middleware/error';
 
 import { connectMongoDB } from './services/mongodb';
@@ -76,6 +78,8 @@ app.use('/api/offers', offerRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/rates', ratesRoutes);
+app.use('/api/catalogues', catalogueRoutes);
+app.use('/api/enquiries', enquiryRoutes);
 
 // Structured Error Handler
 app.use(errorHandler);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingBag, Tag, Users, LifeBuoy, Store, LogOut, ShieldAlert, Coins, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, Users, LifeBuoy, Store, LogOut, ShieldAlert, Coins, Menu, X, MessageSquare, BookOpen, Layers } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
 export const AdminLayout: React.FC = () => {
@@ -31,13 +31,14 @@ export const AdminLayout: React.FC = () => {
   }
 
   const navItems = [
-    { label: 'Executive Dashboard', path: '/admin', icon: LayoutDashboard },
+    { label: 'Showcase Dashboard', path: '/admin', icon: LayoutDashboard },
+    { label: 'Customer Enquiries', path: '/admin/enquiries', icon: MessageSquare },
+    { label: 'Jewellery Designs', path: '/admin/products', icon: Package },
+    { label: 'Digital PDF Catalogues', path: '/admin/catalogues', icon: BookOpen },
+    { label: '14 Categories', path: '/admin/categories', icon: Layers },
     { label: 'Daily Gold Rates', path: '/admin/gold-rates', icon: Coins },
-    { label: 'Product Inventory', path: '/admin/products', icon: Package },
-    { label: 'Order Processing', path: '/admin/orders', icon: ShoppingBag },
-    { label: 'Promotions & Offers', path: '/admin/offers', icon: Tag },
     { label: 'Customer Directory', path: '/admin/customers', icon: Users },
-    { label: 'Support Queue', path: '/admin/support', icon: LifeBuoy }
+    { label: 'Offers & Banners', path: '/admin/offers', icon: Tag }
   ];
 
   return (

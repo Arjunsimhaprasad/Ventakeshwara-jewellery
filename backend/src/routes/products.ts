@@ -17,7 +17,14 @@ router.get('/', (req: Request, res: Response) => {
   }
 
   if (category) {
-    items = items.filter(p => p.categoryId === category || p.jewelleryType?.toLowerCase() === (category as string).toLowerCase());
+    const catQuery = (category as string).toLowerCase();
+    items = items.filter(p =>
+      p.categoryId?.toLowerCase() === catQuery ||
+      p.categoryId?.toLowerCase() === `cat-${catQuery}` ||
+      p.jewelleryType?.toLowerCase() === catQuery ||
+      p.jewelleryType?.toLowerCase().includes(catQuery) ||
+      p.material?.toLowerCase().includes(catQuery)
+    );
   }
 
   if (material) {
@@ -99,6 +106,8 @@ router.post('/', authenticate, requireRole('staff', 'admin', 'owner'), (req: Req
       stockQuantity: data.stockQuantity,
       status: data.status,
       isFeatured: data.isFeatured,
+      isPriceOnRequest: data.isPriceOnRequest || data.price === 0,
+      variations: data.variations || [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       images: (data.images || []).map((img, idx) => ({ id: `img-${Date.now()}-${idx}`, imageUrl: img.imageUrl, altText: img.altText, sortOrder: img.sortOrder }))

@@ -20,24 +20,26 @@ export const LoginSchema = z.object({
 
 // Product Schemas
 export const CreateProductSchema = z.object({
-  categoryId: z.string().uuid().optional().nullable(),
+  categoryId: z.string().optional().nullable(),
   name: z.string().min(2, 'Product name is required'),
   slug: z.string().min(2, 'Slug is required'),
-  sku: z.string().min(2, 'SKU is required'),
+  sku: z.string().min(2, 'SKU / Design ID is required'),
   description: z.string().optional(),
   material: z.string().optional(),
   jewelleryType: z.string().optional(),
-  weightGrams: z.number().positive('Weight must be positive').optional(),
+  weightGrams: z.number().nonnegative('Weight must be non-negative').optional(),
   purity: z.string().optional(),
   makingCharges: z.number().nonnegative('Making charges cannot be negative').default(0),
   stoneInformation: z.string().optional(),
-  price: z.number().positive('Price must be greater than zero'),
+  price: z.number().nonnegative('Price must be non-negative').default(0),
   discountPercentage: z.number().min(0).max(100).default(0),
   stockQuantity: z.number().int().nonnegative().default(0),
   status: ProductStatusSchema.default('active'),
   isFeatured: z.boolean().default(false),
+  isPriceOnRequest: z.boolean().default(false),
+  variations: z.array(z.string()).optional(),
   images: z.array(z.object({
-    imageUrl: z.string().url(),
+    imageUrl: z.string(),
     altText: z.string().optional(),
     sortOrder: z.number().int().default(0)
   })).optional()
@@ -149,5 +151,39 @@ export const UpdateMetalRatesSchema = z.object({
   gold18kPerGram: z.number().positive('18K gold rate must be positive'),
   silverPerGram: z.number().positive('Silver rate must be positive'),
   notes: z.string().optional()
+});
+
+// Catalogue Schemas
+export const CreateCatalogueSchema = z.object({
+  title: z.string().min(2, 'Catalogue title is required'),
+  slug: z.string().min(2, 'Slug is required'),
+  description: z.string().optional(),
+  category: z.string().default('Bridal'),
+  coverImage: z.string().min(1, 'Cover image is required'),
+  pdfUrl: z.string().default('/catalogues/sample.pdf'),
+  pageCount: z.number().int().positive().default(20),
+  itemCount: z.number().int().nonnegative().default(15),
+  isFeatured: z.boolean().default(false),
+  previewImages: z.array(z.string()).optional()
+});
+
+export const UpdateCatalogueSchema = CreateCatalogueSchema.partial();
+
+// Customer Enquiry Schemas
+export const CreateEnquirySchema = z.object({
+  customerName: z.string().min(2, 'Customer name is required'),
+  email: z.string().email('Valid email is required'),
+  phone: z.string().min(8, 'Valid phone number is required'),
+  preferredContact: z.enum(['whatsapp', 'phone', 'email']).default('whatsapp'),
+  productId: z.string().optional().nullable(),
+  productName: z.string().optional().nullable(),
+  designId: z.string().optional().nullable(),
+  category: z.string().optional(),
+  message: z.string().min(5, 'Message must be at least 5 characters')
+});
+
+export const UpdateEnquirySchema = z.object({
+  status: z.enum(['new', 'contacted', 'in_discussion', 'visited_store', 'closed']).optional(),
+  adminNotes: z.string().optional().nullable()
 });
 
